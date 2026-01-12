@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+</head>
+
+<body>
+
+    <div style="width:100vw; height:100vh" id="mapContainer"></div>
+
+    {% if data and data.latitude and data.longitude %}
+    <script>
+        var platform = new H.service.Platform({
+            apikey: "{{ apikey }}"
+        });
+
+        const lat = {{ data.latitude }};
+        const lon = {{ data.longitude }};
+
+        var defaultLayers = platform.createDefaultLayers();
+
+        var map = new H.Map(
+            document.getElementById('mapContainer'),
+            defaultLayers.vector.normal.map,
+            {
+                zoom: 10,
+                center: { lat: lat, lng: lon }
+            }
+        );
+
+        var marker = new H.map.Marker({ lat: lat, lng: lon });
+        map.addObject(marker);
+    </script>
+
+    <h1>Details</h1>
+    <p>Latitude: {{ data.latitude }}</p>
+    <p>Longitude: {{ data.longitude }}</p>
+    {% endif %}
+
+</body>
+
+</html>
